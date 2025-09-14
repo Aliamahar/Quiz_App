@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block title %}Home - Quiz App{% endblock %}
+
+{% block content %}
+<h2>Upload Quiz via Excel (Course ID: {{ course_id }})</h2>
+<form method="POST" enctype="multipart/form-data">
+    <label>Topic:</label>
+    <input type="text" name="topic" required><br><br>
+    <label>Excel File (.xlsx):</label>
+    <input type="file" name="excel_file" accept=".xlsx" required><br><br>
+    <button type="submit">Upload Quiz</button>
+</form>
+{% endblock %}

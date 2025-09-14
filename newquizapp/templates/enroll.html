@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head><title>Enroll in Course</title></head>
+<body>
+    <h2>Enter Course Code to Enroll</h2>
+    <form method="POST">
+        <label>Course Code:</label>
+        <input type="text" name="course_code" required>
+        <button type="submit">Enroll</button>
+    </form>
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</body>
+</html>

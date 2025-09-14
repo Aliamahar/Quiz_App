@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Quiz Results</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        .result-card {
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        .result-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .percentage {
+            font-weight: bold;
+            color: #28a745;
+        }
+        .immediate-result {
+            background-color: #f8f9fa;
+            border-left: 4px solid #28a745;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .progress-bar {
+            transition: width 1s ease-in-out;
+        }
+    </style>
+</head>
+{% extends "layout.html" %}
+
+{% block title %}Home - Quiz App{% endblock %}
+
+{% block content %}
+<body class="bg-light">
+    <div class="container">
+        <div class="result-card card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3>My Quiz Results</h3>
+            </div>
+            <div class="card-body">
+                <!-- Immediate Result Section (shown only when coming from quiz submission) -->
+                {% if immediate_result %}
+                <div class="immediate-result mb-4">
+                    <h4>Your Latest Quiz Result</h4>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5>{{ immediate_result.topic }}</h5>
+                        <span class="percentage">
+                            {{ immediate_result.percentage }}%
+                        </span>
+                    </div>
+
+                    <div class="progress mb-3" style="height: 25px;">
+                        <div class="progress-bar bg-success"
+                             role="progressbar"
+                             style="width: {{ immediate_result.percentage }}%"
+                             aria-valuenow="{{ immediate_result.percentage }}"
+                             aria-valuemin="0"
+                             aria-valuemax="100">
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <span>Score: {{ immediate_result.score }}/{{ immediate_result.total }}</span>
+                        <span class="text-muted">Taken: Just now</span>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Historical Results Section -->
+                <h4>{% if immediate_result %}Previous Attempts{% else %}My Results{% endif %}</h4>
+
+                {% if results %}
+                    {% for result in results %}
+                    <div class="result-item">
+                        <h5>{{ result.topic }}</h5>
+                        <div class="d-flex justify-content-between">
+                            <span class="percentage">
+                                {{ ((result.score / result.total) * 100)|round(1) }}%
+                            </span>
+                            <span>{{ result.score }}/{{ result.total }} correct</span>
+                            <span class="text-muted">
+                                {{ result.taken_at.strftime('%b %d, %Y') }}
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="alert alert-info">
+                        You haven't taken any quizzes yet.
+                    </div>
+                {% endif %}
+
+                <a href="{{ url_for('student_dashboard') }}" class="btn btn-secondary mt-3">
+                    Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS for progress bar animation -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Animate progress bar on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressBar = document.querySelector('.progress-bar');
+            if (progressBar) {
+                // Reset width to 0 and then animate to actual percentage
+                progressBar.style.width = '0%';
+                setTimeout(() => {
+                    progressBar.style.width = progressBar.getAttribute('aria-valuenow') + '%';
+                }, 100);
+            }
+        });
+    </script>
+</body>
+{% endblock %}
+</html>

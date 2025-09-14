@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}Take Quiz: {{ quiz.title if quiz else 'Unknown Quiz' }}{% endblock %}
+
+{% block content %}
+<h2>Take Quiz: {{ quiz.title if quiz else 'Unknown Quiz' }}</h2>
+
+{% if not questions %}
+    <p>No questions available for this quiz.</p>
+{% else %}
+    <form method="POST" action="{{ url_for('submit_quiz', quiz_id=quiz_id) }}">
+        {% for question in questions %}
+            <div class="question-block">
+                <h3>Q{{ loop.index }}. {{ question.question }}</h3>
+                <div class="options">
+                    <label><input type="radio" name="q{{ question.id }}" value="A" required> {{ question.option_a }}</label><br>
+                    <label><input type="radio" name="q{{ question.id }}" value="B"> {{ question.option_b }}</label><br>
+                    <label><input type="radio" name="q{{ question.id }}" value="C"> {{ question.option_c }}</label><br>
+                    <label><input type="radio" name="q{{ question.id }}" value="D"> {{ question.option_d }}</label><br>
+                </div>
+            </div>
+        {% endfor %}
+
+        <div style="margin-top: 20px;">
+            <button type="submit">Submit Quiz</button>
+        </div>
+    </form>
+{% endif %}
+{% endblock %}

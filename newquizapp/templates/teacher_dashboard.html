@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard - Quiz App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        .card {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .course-code {
+            background-color: #f8f9fa;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #555;
+        }
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-primary {
+            background-color: #333;
+        }
+        .btn-primary:hover {
+            background-color: #555;
+        }
+        .btn-success {
+            background-color: #28a745;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        .btn-info {
+            background-color: #17a2b8;
+        }
+        .btn-info:hover {
+            background-color: #138496;
+        }
+        .quiz-list {
+            margin-top: 15px;
+        }
+        .quiz-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .quiz-item:last-child {
+            border-bottom: none;
+        }
+        .empty-state {
+            color: #6c757d;
+            text-align: center;
+            padding: 20px;
+        }
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+{% extends "layout.html" %}
+
+{% block title %}Some Page{% endblock %}
+
+{% block content %}
+<!-- Page content here -->
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Welcome, {{ session['username'] }}</h1>
+            <div class="actions">
+                <a href="{{ url_for('create_course') }}" class="btn btn-success">+ New Course</a>
+
+            </div>
+        </div>
+
+        {% if courses %}
+            {% for course in courses %}
+                <div class="card">
+                    <div class="course-header">
+                        <h3>{{ course.name }}</h3>
+                        <span class="course-code">{{ course.code }}</span>
+                    </div>
+
+                    <div class="form-group">
+                        <a href="{{ url_for('create_quiz', course_id=course.id) }}" class="btn btn-primary">+ Add Quiz</a>
+                    </div>
+
+                    <div class="quiz-list">
+                        {% if course.quizzes %}
+                            {% for quiz in course.quizzes %}
+                                <div class="quiz-item">
+                                    <span>{{ quiz.topic }}</span>
+                                    <div class="actions">
+                                        <a href="{{ url_for('quiz_results', quiz_id=quiz.id) }}" class="btn btn-info">Results</a>
+                                        <a href="#" class="btn btn-primary">View</a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="empty-state">No quizzes created yet</div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="card">
+                <div class="empty-state">
+                    <p>You haven't created any courses yet</p>
+                    <a href="{{ url_for('create_course') }}" class="btn btn-success">Create Your First Course</a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</body>
+{% endblock %}
+</html>

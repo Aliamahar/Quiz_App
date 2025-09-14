@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Quiz</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f4f4f4; }
+        h2 { color: #333; }
+        .form-container { background-color: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        label { display: block; margin-bottom: 8px; }
+        input[type="text"], input[type="file"], textarea, select, input[type="submit"] { width: 100%; padding: 10px; margin: 8px 0; }
+        textarea { height: 100px; }
+        input[type="submit"] { background-color: #28a745; color: white; border: none; cursor: pointer; }
+        input[type="submit"]:hover { background-color: #218838; }
+        .upload-option { margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <h2>Add Quiz to Course</h2>
+
+    <div class="form-container">
+        <form method="POST" enctype="multipart/form-data">
+            <label for="topic">Quiz Topic</label>
+            <input type="text" id="topic" name="topic" required>
+
+            <div class="upload-option">
+                <label>Choose upload method:</label>
+                <label>
+                    <input type="radio" name="upload_method" value="manual" checked> Manual Entry
+                </label>
+                <label>
+                    <input type="radio" name="upload_method" value="excel"> Upload from Excel
+                </label>
+            </div>
+
+            <div id="excel-upload" style="display:none;">
+                <label for="excel_file">Upload Excel File</label>
+                <input type="file" id="excel_file" name="excel_file" accept=".xlsx">
+            </div>
+
+            <div id="manual-entry">
+                <label for="question">Question</label>
+                <textarea name="question" required></textarea>
+
+                <label for="option_a">Option A</label>
+                <input type="text" name="option_a" required>
+
+                <label for="option_b">Option B</label>
+                <input type="text" name="option_b" required>
+
+                <label for="option_c">Option C</label>
+                <input type="text" name="option_c" required>
+
+                <label for="option_d">Option D</label>
+                <input type="text" name="option_d" required>
+
+                <label for="correct_option">Correct Option</label>
+                <select name="correct_option" required>
+                    <option value="A">Option A</option>
+                    <option value="B">Option B</option>
+                    <option value="C">Option C</option>
+                    <option value="D">Option D</option>
+                </select>
+            </div>
+
+            <input type="submit" value="Add Quiz">
+        </form>
+    </div>
+
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+
+    <script>
+        document.querySelectorAll('input[name="upload_method"]').forEach(function(element) {
+            element.addEventListener('change', function() {
+                if (this.value === 'excel') {
+                    document.getElementById('excel-upload').style.display = 'block';
+                    document.getElementById('manual-entry').style.display = 'none';
+                } else {
+                    document.getElementById('excel-upload').style.display = 'none';
+                    document.getElementById('manual-entry').style.display = 'block';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
