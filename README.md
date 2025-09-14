@@ -12,12 +12,14 @@ A web-based quiz application built with **Flask** and **MySQL**, designed for bo
 - Upload or manually create quizzes (MCQs)  
 - Manage student enrollments  
 - View student quiz results  
+<img width="624" height="309" alt="image" src="https://github.com/user-attachments/assets/f09c85c7-260a-4d5e-852a-d6f77373117e" />
 
 ### 👩‍🎓 For Students  
 - Log in with email or roll number  
 - View enrolled courses and quizzes  
 - Attempt quizzes and get instant results  
 - Practice with AI-generated quizzes  
+<img width="419" height="210" alt="image" src="https://github.com/user-attachments/assets/1d6a9f87-1aea-48de-8ee5-478f17200331" />
 
 ---
 
